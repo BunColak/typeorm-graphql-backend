@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^8.0.29",
+    "@types/graphql": "^14.5.0",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "3.3.3333"
+  },
+  "dependencies": {
+    "graphql": "^14.6.0",
+    "graphql-yoga": "^1.18.3",
+    "mysql": "^2.14.1",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^4.1.1",
+    "type-graphql": "^0.17.6",
+    "typeorm": "0.2.22"
+  },
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index --watch src/**/*.ts"
+  }
+}
