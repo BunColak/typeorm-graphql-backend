@@ -9,10 +9,10 @@ export default class BaseModel extends BaseEntity {
     id: number;
 
     @CreateDateColumn()
-    @Field()
-    createdAt: number;
+    @Field(type => Date)
+    createdAt: Date;
 
     @UpdateDateColumn()
-    @Field()
-    updatedAt: number;
+    @Field(type => Date)
+    updatedAt: Date;
 }
