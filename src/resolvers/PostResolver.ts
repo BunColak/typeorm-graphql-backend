@@ -5,7 +5,6 @@ import {
   FieldResolver,
   Root,
   Mutation,
-  Args,
   Authorized,
   Ctx
 } from "type-graphql";
@@ -26,13 +25,13 @@ export default class PostResolver {
   @Authorized()
   @Query(returns => [Post])
   async posts() {
-    return this.postRepository.find();
+    return this.postRepository.find({ relations: ["likedBy"] });
   }
 
   @Authorized()
   @Query(returns => Post)
   async post(@Arg("id") id: number) {
-    return this.postRepository.findOneOrFail(id);
+    return this.postRepository.findOneOrFail(id, { relations: ["likedBy"] });
   }
 
   @Authorized()
@@ -43,6 +42,31 @@ export default class PostResolver {
   ) {
     const author = await this.userRepository.findOneOrFail(user.id);
     const post = this.postRepository.create({ content, author });
+    return this.postRepository.save(post);
+  }
+
+  @Authorized()
+  @Mutation(returns => Post)
+  async likePost(@Arg("id") id: number, @Ctx() { user }: Context) {
+    const likingUser = await this.userRepository.findOneOrFail(user.id);
+    const post = await this.postRepository.findOneOrFail(id, {
+      relations: ["likedBy"]
+    });
+    
+    const alreadyLiked = post.likedBy.some(liking => liking.id === user.id)
+    
+    if (!alreadyLiked)
+      post.likedBy.push(likingUser);
+    return this.postRepository.save(post);
+  }
+
+  @Authorized()
+  @Mutation(returns => Post)
+  async unlikePost(@Arg("id") id: number, @Ctx() { user }: Context) {
+    const post = await this.postRepository.findOneOrFail(id, {
+      relations: ["likedBy"]
+    });
+    post.likedBy = post.likedBy.filter(likedUser => likedUser.id !== user.id);
     return this.postRepository.save(post);
   }
 

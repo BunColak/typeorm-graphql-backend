@@ -1,5 +1,5 @@
 import BaseModel from "./BaseModel";
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, ManyToMany } from "typeorm";
 import { MinLength, IsNotEmpty  } from 'class-validator'
 import { ObjectType, Field, InputType } from "type-graphql";
 import Post from "./Post";
@@ -19,6 +19,9 @@ export default class User extends BaseModel {
     @OneToMany(type => Post, post => post.author)
     @Field(type => [Post])
     posts: Post[];
+
+    @ManyToMany(type => Post, post => post.likedBy)
+    liked: Post[]
 }
 
 @ObjectType()
@@ -27,7 +30,7 @@ export class LoginResponse {
     @Field()
     token: string;
     
-    @Field()
+    @Field(type => User)
     user: User
 }
 
