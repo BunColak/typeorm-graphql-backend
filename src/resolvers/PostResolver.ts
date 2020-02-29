@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg, FieldResolver, Root, Mutation, Args } from "type-graphql";
+import { Resolver, Query, Arg, FieldResolver, Root, Mutation, Args, Authorized } from "type-graphql";
 import Post, { CreatePostInput } from "../models/Post";
 import { Repository, In } from "typeorm";
 import User from "../models/User";
@@ -12,16 +12,19 @@ export default class PostResolver {
   @InjectRepository(Post)
   private postRepository: Repository<Post>;
 
+  @Authorized()
   @Query(returns => [Post])
   async posts() {
     return this.postRepository.find();
   }
 
+  @Authorized()
   @Query(returns => Post)
   async post(@Arg("id") id: number) {
     return this.postRepository.findOneOrFail(id);
   }
 
+  @Authorized()
   @Mutation(returns => Post)
   async createPost(@Arg('data') {content}: CreatePostInput) {
     // TODO get user from auth  

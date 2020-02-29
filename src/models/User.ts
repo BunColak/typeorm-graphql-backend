@@ -21,9 +21,31 @@ export default class User extends BaseModel {
     posts: Post[];
 }
 
+@ObjectType()
+export class LoginResponse {
+
+    @Field()
+    token: string;
+    
+    @Field()
+    user: User
+}
+
 @InputType()
 export class CreateUserInput {
     
+    @Field()
+    @IsNotEmpty()
+    username: string;
+    
+    @Field()
+    @IsNotEmpty()
+    @MinLength(6, {message: "Password cannot be shorter than 6"})
+    password: string;
+}
+
+@InputType()
+export class LoginInput {
     @Field()
     @IsNotEmpty()
     username: string;
