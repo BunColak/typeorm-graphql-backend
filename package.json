@@ -27,7 +27,7 @@
     "typeorm-typedi-extensions": "^0.2.3"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index --watch src/**/*.ts",
+    "start": "nodemon --exec ts-node src/index --watch src/**/*.ts"
   },
   "engines": {
     "node": "12.x"
