@@ -4,13 +4,14 @@ import { buildTypeDefsAndResolvers } from "type-graphql";
 import { GraphQLServer } from "graphql-yoga";
 import { Container } from "typedi";
 import UserResolver from "./resolvers/UserResolver";
+import PostResolver from "./resolvers/PostResolver";
 
 useContainer(Container);
 createConnection()
   .then(async connection => {
     console.log("conencted to database");
     const { resolvers, typeDefs } = await buildTypeDefsAndResolvers({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, PostResolver],
       container: Container
     });
     const server = new GraphQLServer({ typeDefs, resolvers });
