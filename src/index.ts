@@ -9,6 +9,8 @@ import getUser from "./auth/getUser";
 import { ContextParameters } from "graphql-yoga/dist/types";
 import { authChecker } from "./auth/authChecker";
 
+const PORT = process.env.PORT || 4000;
+
 useContainer(Container);
 createConnection()
   .then(async connection => {
@@ -27,7 +29,7 @@ createConnection()
       })
     });
 
-    server.start(() => {
+    server.start({ port: PORT }, () => {
       console.log("server started");
     });
   })
